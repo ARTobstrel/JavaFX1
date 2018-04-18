@@ -65,7 +65,7 @@ public class Controller extends Main {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-            stage.showAndWait();
+            stage.show();
         });
     }
 

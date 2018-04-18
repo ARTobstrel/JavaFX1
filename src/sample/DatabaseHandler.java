@@ -8,7 +8,8 @@ import java.sql.SQLException;
 public class DatabaseHandler extends Configs {
     Connection dbConnection;
 
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
+    public Connection getDbConnection()
+            throws ClassNotFoundException, SQLException {
         String connectionString = "jdbc:mysql://" + dbHost + ":"
                 + dbPort + "/" + dbName;
 
@@ -19,12 +20,7 @@ public class DatabaseHandler extends Configs {
         return dbConnection;
     }
 
-    public void signUpUser(String firstName,
-                           String lastName,
-                           String userName,
-                           String password,
-                           String location,
-                           String gender) throws SQLException, ClassNotFoundException {
+    public void signUpUser(User user) {
         String insert = "INSERT INTO " + Const.USER_TABLE + "(" +
                 Const.USERS_FIRSTNAME + "," +
                 Const.USERS_LASTNAME + "," +
@@ -34,14 +30,20 @@ public class DatabaseHandler extends Configs {
                 Const.USERS_GENDER + ")" +
                 "VALUES(?,?,?,?,?,?)";
 
-        PreparedStatement prSt = getDbConnection().prepareStatement(insert);
-        prSt.setString(1, firstName);
-        prSt.setString(2, lastName);
-        prSt.setString(3, userName);
-        prSt.setString(4, password);
-        prSt.setString(5, location);
-        prSt.setString(6, gender);
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            prSt.setString(1, user.getFirstName());
+            prSt.setString(2, user.getLastName());
+            prSt.setString(3, user.getUserName());
+            prSt.setString(4, user.getPassword());
+            prSt.setString(5, user.getLocation());
+            prSt.setString(6, user.getGender());
 
-        prSt.executeUpdate();
+            prSt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
