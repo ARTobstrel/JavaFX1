@@ -18,6 +18,10 @@ public class User {
         this.gender = gender;
     }
 
+    public User() {
+        // пустой конструктор
+    }
+
     public String getFirstName() {
         return firstName;
     }

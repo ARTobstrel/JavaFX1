@@ -2,6 +2,8 @@ package sample;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.embed.swing.JFXPanel;
@@ -13,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 
 public class Controller extends Main {
 
@@ -70,6 +73,22 @@ public class Controller extends Main {
     }
 
     private void loginUser(String loginText, String loginPassword) {
-        //
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        User user = new User();
+        user.setUserName(loginText);
+        user.setPassword(loginPassword);
+        ResultSet result = dbHandler.getUser(user);
+
+        int counter = 0;
+
+        try {
+            while(result.next()) { counter++; }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(counter >= 1) {
+            System.out.println("Success!");
+        }
     }
 }
