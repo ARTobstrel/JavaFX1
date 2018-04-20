@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.animation.Shake;
 
 
 public class Controller extends Main {
@@ -54,21 +54,7 @@ public class Controller extends Main {
 
         // нажатие клавиши Registration
         loginSignUpButton.setOnAction(event -> {
-            loginSignUpButton.getScene().getWindow().hide(); //прячем основное окно
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sample/signUp.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
+            openNewScene("/sample/signUp.fxml");
         });
     }
 
@@ -89,6 +75,30 @@ public class Controller extends Main {
 
         if(counter >= 1) {
             System.out.println("Success!");
+            openNewScene("/sample/app.fxml");
+        } else {
+            Shake userLoginAnim = new Shake(login_field);
+            Shake userPasswordAnim = new Shake(password_field);
+            userLoginAnim.playAnim();
+            userPasswordAnim.playAnim();
         }
+    }
+
+    public void openNewScene(String window) {
+        loginSignUpButton.getScene().getWindow().hide(); //прячем основное окно
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(window));
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
     }
 }
